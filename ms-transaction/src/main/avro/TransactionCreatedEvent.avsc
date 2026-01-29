@@ -71,7 +71,7 @@
           {
             "name": "accountExternalIdCredit",
             "type": "string",
-            "doc": "Credit account external identifier (source)"
+            "doc": "Credit account external identifier (destination)"
           },
           {
             "name": "transferTypeId",
