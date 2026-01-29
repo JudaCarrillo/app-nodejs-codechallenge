@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "Event",
-  "namespace": "ccom.yape.services.transaction.avro",
+  "namespace": "com.yape.services.transaction.avro",
   "fields": [
     {
       "name": "id",
