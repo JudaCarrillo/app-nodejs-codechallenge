@@ -110,8 +110,7 @@
                 "PENDING",
                 "APPROVED",
                 "REJECTED"
-              ],
-              "default": "PENDING"
+              ]
             },
             "doc": "Current status of the transaction (always PENDING upon creation)"
           },
