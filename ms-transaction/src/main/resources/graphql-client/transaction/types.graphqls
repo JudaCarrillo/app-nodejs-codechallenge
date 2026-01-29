@@ -36,7 +36,7 @@ Response type for createTransaction mutation.
 """
 type CreatedTransaction {
     """The created transaction"""
-    transaction: Transaction
+    transaction: Transaction!
 }
 
 """
