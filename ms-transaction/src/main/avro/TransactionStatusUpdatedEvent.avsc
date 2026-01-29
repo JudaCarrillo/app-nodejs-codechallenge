@@ -69,7 +69,7 @@
               "type": "enum",
               "name": "TransactionStatus",
               "namespace": "com.yape.transaction.events.enums",
-              "doc": "Possible previous status of the transaction",
+              "doc": "Possible statuses of a financial transaction",
               "symbols": [
                 "PENDING",
                 "APPROVED",
