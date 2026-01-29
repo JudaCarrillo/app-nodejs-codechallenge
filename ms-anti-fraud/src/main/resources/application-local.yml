@@ -48,7 +48,7 @@ mp:
         connector: smallrye-kafka
         topic: test-event
         group:
-          id: ms-transaction-group
+          id: ms-anti-fraud-group
         auto:
           offset:
             reset: earliest
