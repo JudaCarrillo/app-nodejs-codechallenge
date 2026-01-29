@@ -1,0 +1,85 @@
+# =============================================================================
+# Transaction Domain - Type Definitions
+# =============================================================================
+
+"""
+Represents a financial transaction in the system.
+"""
+type Transaction {
+    """Unique external identifier of the transaction"""
+    transactionExternalId: UUID!
+
+    """Identifier of the debit account (source)"""
+    accountExternalIdDebit: UUID!
+
+    """Identifier of the credit account (destination)"""
+    accountExternalIdCredit: UUID!
+
+    """Type of the transaction"""
+    transactionType: TransactionType!
+
+    """Current status of the transaction"""
+    transactionStatus: TransactionStatusDetail!
+
+    """Amount of the transaction"""
+    value: BigDecimal!
+
+    """Date and time of the transaction creation"""
+    createdAt: DateTime!
+
+    """Date and time of the last update"""
+    updatedAt: DateTime!
+}
+
+"""
+Response type for createTransaction mutation.
+"""
+type CreatedTransaction {
+    """The created transaction"""
+    transaction: Transaction!
+}
+
+"""
+Details about a transaction type (e.g., INTERNAL, INTRABANK).
+"""
+type TransactionType {
+    """Identifier of the type"""
+    id: Int!
+
+    """Name of the transaction type"""
+    name: String!
+
+    """Description of the type"""
+    description: String
+}
+
+"""
+Details about a transaction status.
+"""
+type TransactionStatusDetail {
+    """Name of the status (PENDING, APPROVED, REJECTED)"""
+    name: TransactionStatus!
+
+    """Description of the status"""
+    description: String
+
+    """Date when this status was assigned"""
+    assignedAt: DateTime
+}
+
+"""
+Event emitted when a transaction status changes (for Subscriptions).
+"""
+type TransactionStatusChangedEvent {
+    """The updated transaction"""
+    transaction: Transaction!
+
+    """Previous status"""
+    previousStatus: TransactionStatus!
+
+    """New status"""
+    newStatus: TransactionStatus!
+
+    """Date and time of the change"""
+    changedAt: DateTime!
+}
