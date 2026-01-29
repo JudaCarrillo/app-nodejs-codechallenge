@@ -1,0 +1,34 @@
+# =============================================================================
+# Transaction Domain - Enum Definitions
+# =============================================================================
+
+"""
+Status of a transaction in the anti-fraud validation flow.
+"""
+enum TransactionStatus {
+    """Transaction created, pending anti-fraud validation"""
+    PENDING
+
+    """Transaction approved by the anti-fraud system"""
+    APPROVED
+
+    """Transaction rejected by the anti-fraud system (e.g., value > 1000)"""
+    REJECTED
+}
+
+"""
+Types of fund transfers supported by the system.
+"""
+enum TransferType {
+    """Transfer between accounts of the same user"""
+    INTERNAL
+
+    """Transfer to an account of a different user within the same bank"""
+    INTRABANK
+
+    """Transfer to an account in a different bank"""
+    INTERBANK
+
+    """International transfer"""
+    INTERNATIONAL
+}
