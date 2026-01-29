@@ -11,7 +11,7 @@
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 18081:18081 quarkus/ms-transaction-jvm
+# docker run -i --rm -p 18080:18080 quarkus/ms-transaction-jvm
 #
 ###
 FROM registry.access.redhat.com/ubi9/openjdk-21:1.23
