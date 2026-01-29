@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "Event",
+  "namespace": "ccom.yape.services.transaction.avro",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    }
+  ]
+}

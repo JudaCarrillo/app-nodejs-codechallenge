@@ -1,0 +1,62 @@
+# This configuration is used for local development environment.
+# Profile: local (activate with -Dquarkus.profile=local)
+
+# External Service Hosts
+event-hubs-host: "127.0.0.1"
+schema-registry-host: "127.0.0.1"
+
+# Quarkus Configuration
+quarkus:
+  devservices:
+    enabled: false
+
+  # Logging Configuration
+  log:
+    level: INFO
+    category:
+      "com.yape":
+        level: DEBUG
+      "org.hibernate.SQL":
+        level: DEBUG
+      "org.hibernate.type.descriptor.sql":
+        level: TRACE
+      "io.smallrye.reactive.messaging":
+        level: DEBUG
+
+# Kafka / Event Streaming Configuration
+kafka:
+  bootstrap:
+    servers: "${event-hubs-host}:9092"
+  schema:
+    registry:
+      url: "http://${schema-registry-host}:8081"
+
+# MicroProfile Reactive Messaging Configuration
+mp:
+  messaging:
+    outgoing:
+      kafka-out:
+        connector: smallrye-kafka
+        topic: test-event
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
+    incoming:
+      kafka-in:
+        connector: smallrye-kafka
+        topic: test-event
+        group:
+          id: ms-transaction-group
+        auto:
+          offset:
+            reset: earliest
+        failure-strategy: ignore
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value:
+          deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        specific:
+          avro:
+            reader: true
