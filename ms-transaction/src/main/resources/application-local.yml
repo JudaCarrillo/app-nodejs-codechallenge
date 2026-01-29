@@ -19,7 +19,7 @@ quarkus:
     username: "${postgresql-user}"
     password: "${postgresql-pass}"
     jdbc:
-      url: "jdbc:postgresql://${postgresql-host}:${postgresql-port}/postgres"
+      url: "jdbc:postgresql://${postgresql-host}:${postgresql-port}/yape_transactions"
       # Connection pool settings
       max-size: 16
       min-size: 4
