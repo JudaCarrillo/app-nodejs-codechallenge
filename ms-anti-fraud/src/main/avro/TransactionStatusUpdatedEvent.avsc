@@ -74,8 +74,7 @@
                 "PENDING",
                 "APPROVED",
                 "REJECTED"
-              ],
-              "default": "PENDING"
+              ]
             },
             "doc": "Previous status of the transaction"
           },
