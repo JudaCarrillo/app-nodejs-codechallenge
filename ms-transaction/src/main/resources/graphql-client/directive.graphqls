@@ -7,12 +7,12 @@ directive @authenticated on FIELD_DEFINITION
 Indicates the maximum allowed value for a field or argument
 """
 directive @Max(
-    value : BigDecimal = 2147483647
+    value : BigDecimal = 2147483647.00
 ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
 """
 Indicates the minimum allowed value for a field or argument
 """
 directive @Min(
-    value : BigDecimal = -2147483648
+    value : BigDecimal = -2147483648.00
 ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
