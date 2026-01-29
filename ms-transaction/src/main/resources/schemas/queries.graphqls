@@ -1,0 +1,5 @@
+type Query {
+    getUserById(id: ID!): User
+    listUsers: [User!]!
+    getPostById(id: ID!): Post
+}
