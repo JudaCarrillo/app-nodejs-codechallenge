@@ -129,7 +129,7 @@
         <!-- Testing -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
+            <artifactId>quarkus-junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -170,11 +170,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <graphqlSchemaPaths>
-                        <graphqlSchemaPath>src/main/resources/schemas/schema.graphqls</graphqlSchemaPath>
-                        <graphqlSchemaPath>src/main/resources/schemas/queries.graphqls</graphqlSchemaPath>
-                        <graphqlSchemaPath>src/main/resources/schemas/mutations.graphqls</graphqlSchemaPath>
-                    </graphqlSchemaPaths>
+                    <graphqlSchemas>
+                        <rootDir>${project.basedir}/src/main/resources/graphql-client</rootDir>
+                        <includePattern>.*\.graphqls$</includePattern>
+                        <recursive>true</recursive>
+                    </graphqlSchemas>
                     <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                     <generateApis>true</generateApis>
                     <generateDataFetchingEnvironmentArgumentInApis>true</generateDataFetchingEnvironmentArgumentInApis>
