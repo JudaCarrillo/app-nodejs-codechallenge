@@ -79,22 +79,6 @@
             "doc": "Transfer type identifier. (1: INTERNAL, 2: INTRABANK, 3: INTERBANK, 4: INTERNATIONAL)"
           },
           {
-            "name": "transferType",
-            "type": {
-              "type": "enum",
-              "name": "TransferType",
-              "namespace": "com.yape.transaction.events.enums",
-              "doc": "Transfer types supported by the system",
-              "symbols": [
-                "INTERNAL",
-                "INTRABANK",
-                "INTERBANK",
-                "INTERNATIONAL"
-              ]
-            },
-            "doc": "Transfer type as enum"
-          },
-          {
             "name": "value",
             "type": "string",
             "doc": "Transaction monetary value as string to preserve precision"
