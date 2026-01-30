@@ -99,16 +99,23 @@ services:
   ms-transaction:
     build:
       context: ./ms-transaction
-      dockerfile: devops/docker/Dockerfile.jvm
+      dockerfile: devops/docker/Dockerfile.multistage
     container_name: yape-ms-transaction
     ports:
       - "18080:18080"
     environment:
+      QUARKUS_PROFILE: local
+      # PostgreSQL
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/yape_transactions
       QUARKUS_DATASOURCE_USERNAME: postgres
       QUARKUS_DATASOURCE_PASSWORD: postgres
+      # Flyway
+      QUARKUS_FLYWAY_MIGRATE_AT_START: "true"
+      # Redis
+      QUARKUS_REDISSON_SINGLE_SERVER_CONFIG_ADDRESS: redis://redis:6379
+      # Kafka
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KAFKA_SCHEMA_REGISTRY_URL: http://schema-registry:8081
     depends_on:
       postgres:
         condition: service_healthy
@@ -116,36 +123,40 @@ services:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:18080/ms-transaction/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     networks:
       - yape-network
 
   ms-anti-fraud:
     build:
       context: ./ms-anti-fraud
-      dockerfile: devops/docker/Dockerfile.jvm
+      dockerfile: devops/docker/Dockerfile.multistage
     container_name: yape-ms-anti-fraud
     ports:
       - "18081:18081"
     environment:
+      QUARKUS_PROFILE: local
+      # Kafka
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KAFKA_SCHEMA_REGISTRY_URL: http://schema-registry:8081
     depends_on:
       kafka:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:18081/ms-anti-fraud/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     networks:
       - yape-network
 
