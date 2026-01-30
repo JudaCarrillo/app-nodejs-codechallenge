@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "TransactionStatusUpdatedEvent",
-  "namespace": "com.yape.transaction.events",
+  "namespace": "com.yape.services.transaction.events",
   "doc": "Emitted event when Anti-Fraud service updates the status of a transaction. Published to the topic 'transaction.status' for ms-transaction to update the status in the database.",
   "fields": [
     {
@@ -9,7 +9,7 @@
       "type": {
         "type": "record",
         "name": "EventMetadata",
-        "namespace": "com.yape.common.events",
+        "namespace": "com.yape.services.common.events",
         "doc": "Standard metadata for all system events",
         "fields": [
           {
@@ -68,7 +68,7 @@
             "type": {
               "type": "enum",
               "name": "TransactionStatus",
-              "namespace": "com.yape.transaction.events.enums",
+              "namespace": "com.yape.services.transaction.events.enums",
               "doc": "Possible statuses of a financial transaction",
               "symbols": [
                 "PENDING",
@@ -80,7 +80,7 @@
           },
           {
             "name": "newStatus",
-            "type": "com.yape.transaction.events.enums.TransactionStatus",
+            "type": "com.yape.services.transaction.events.enums.TransactionStatus",
             "doc": "New status of the transaction"
           },
           {
