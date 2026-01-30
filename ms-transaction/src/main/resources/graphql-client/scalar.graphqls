@@ -11,6 +11,12 @@ Format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
 scalar DateTime
 
 """
+Date in ISO 8601 format
+Format: yyyy-MM-dd
+"""
+scalar Date
+
+"""
 Monetary value with decimal precision
 Example: 1500.50
 """

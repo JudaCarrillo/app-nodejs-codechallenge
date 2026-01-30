@@ -9,20 +9,16 @@ type Query {
     """
     Retrieves a transaction by its external identifier.
 
-    Security:
-    - Requires authentication
-
     Possible errors:
     - NOT_FOUND: Transaction does not exist
-    - UNAUTHORIZED: Invalid or expired token
     """
     transaction(
         """Unique external identifier of the transaction"""
         transactionExternalId: UUID!
-    ): Transaction @authenticated
+    ): Transaction
 
     """
     Retrieves all available transfer types.
     """
-    transferTypes: [TransactionType!]!
+    transferTypes: [TransferType!]!
 }

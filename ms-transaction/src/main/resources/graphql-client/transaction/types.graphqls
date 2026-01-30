@@ -9,62 +9,43 @@ type Transaction {
     """Unique external identifier of the transaction"""
     transactionExternalId: UUID!
 
-    """Identifier of the debit account (source)"""
-    accountExternalIdDebit: UUID!
-
-    """Identifier of the credit account (destination)"""
-    accountExternalIdCredit: UUID!
-
     """Type of the transaction"""
     transactionType: TransactionType!
 
     """Current status of the transaction"""
-    transactionStatus: TransactionStatusDetail!
+    transactionStatus: TransactionStatus!
 
     """Amount of the transaction"""
     value: BigDecimal!
 
     """Date and time of the transaction creation"""
-    createdAt: DateTime!
-
-    """Date and time of the last update"""
-    updatedAt: DateTime!
+    createdAt: Date!
 }
 
 """
-Response type for createTransaction mutation.
+Details about a transfer type.
 """
-type CreatedTransaction {
-    """The created transaction"""
-    transaction: Transaction!
+type TransferType {
+    """Identifier of the transfer type"""
+    transferTypeId: ID!
+    """Name of the transfer type"""
+    name: String!
 }
 
 """
-Details about a transaction type (e.g., INTERNAL, INTRABANK).
+Details about a transaction type.
 """
 type TransactionType {
-    """Identifier of the type"""
-    id: Int!
-
     """Name of the transaction type"""
     name: String!
-
-    """Description of the type"""
-    description: String
 }
 
 """
 Details about a transaction status.
 """
-type TransactionStatusDetail {
-    """Name of the status (PENDING, APPROVED, REJECTED)"""
-    name: TransactionStatus!
-
-    """Description of the status"""
-    description: String
-
-    """Date when this status was assigned"""
-    assignedAt: DateTime
+type TransactionStatus {
+    """Name of the status"""
+    name: String!
 }
 
 """
@@ -75,10 +56,10 @@ type TransactionStatusChangedEvent {
     transaction: Transaction!
 
     """Previous status"""
-    previousStatus: TransactionStatus!
+    previousStatus: String!
 
     """New status"""
-    newStatus: TransactionStatus!
+    newStatus: String!
 
     """Date and time of the change"""
     changedAt: DateTime!

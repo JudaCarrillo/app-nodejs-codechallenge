@@ -1,14 +1,18 @@
 # This configuration is used for local development environment.
 # Profile: local (activate with -Dquarkus.profile=local)
 
-# External Service Hosts
-postgresql-host: "127.0.0.1"
-postgresql-port: 5432
-postgresql-user: "postgres"
-postgresql-pass: "postgres"
+# External Service Hosts (use environment variables with defaults for local dev)
+postgresql-host: "${POSTGRES_HOST:127.0.0.1}"
+postgresql-port: "${POSTGRES_PORT:5432}"
+postgresql-user: "${POSTGRES_USER:postgres}"
+postgresql-pass: "${POSTGRES_PASSWORD:postgres}"
 
-event-hubs-host: "127.0.0.1"
-schema-registry-host: "127.0.0.1"
+event-hubs-host: "${KAFKA_HOST:127.0.0.1}"
+schema-registry-host: "${SCHEMA_REGISTRY_HOST:127.0.0.1}"
+
+redis-host: "${REDIS_HOST:127.0.0.1}"
+redis-port: "${REDIS_PORT:6379}"
+redis-pass: "${REDIS_PASSWORD:}"
 
 # Quarkus Configuration
 quarkus:
@@ -27,14 +31,22 @@ quarkus:
       idle-removal-interval: 2M
       max-lifetime: 30M
 
+  # Redis Configuration
+  redisson:
+    threads: 16
+    netty-threads: 32
+    single-server-config:
+      address: "redis://${redis-host}:${redis-port}"
+      password:
+
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
   # Hibernate ORM Configuration
   hibernate-orm:
-    database:
-      # Options: none, create, drop-and-create, drop, update, validate
-      generation: update
     log:
-      sql: true
-      format-sql: true
+      sql: false
 
   devservices:
     enabled: false
@@ -46,11 +58,34 @@ quarkus:
       "com.yape":
         level: DEBUG
       "org.hibernate.SQL":
-        level: DEBUG
-      "org.hibernate.type.descriptor.sql":
-        level: TRACE
+        level: ERROR
       "io.smallrye.reactive.messaging":
-        level: DEBUG
+        level: ERROR
+
+  # SmallRye GraphQL Configuration
+  smallrye-graphql:
+    error-extension-fields:
+      - exception
+      - classification
+      - code
+    show-runtime-exception-message:
+      - com.yape.services.shared.exception.BusinessException
+      - com.yape.services.shared.exception.ValidationException
+      - com.yape.services.shared.exception.ResourceNotFoundException
+
+application:
+  cache:
+    transaction:
+      map-name: "transactions"
+      prefix: "transaction:"
+      ttl:
+        pending: 300
+        approved: 3600
+        rejected: 3600
+    transfer-type:
+      map-name: "transfer-types"
+      prefix: "transfer_type:"
+      ttl: 86400
 
 # Kafka / Event Streaming Configuration
 kafka:
@@ -64,18 +99,21 @@ kafka:
 mp:
   messaging:
     outgoing:
-      kafka-out:
+      transaction-producer:
         connector: smallrye-kafka
-        topic: test-event
+        topic: transaction.created
         key:
           serializer: org.apache.kafka.common.serialization.StringSerializer
         value:
           serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        schema:
+          registry:
+            url: "http://${schema-registry-host}:8081"
 
     incoming:
-      kafka-in:
+      transaction-status-consumer:
         connector: smallrye-kafka
-        topic: test-event
+        topic: transaction.status
         group:
           id: ms-transaction-group
         auto:
@@ -86,6 +124,9 @@ mp:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
         value:
           deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema:
+          registry:
+            url: "http://${schema-registry-host}:8081"
         specific:
           avro:
             reader: true
