@@ -1,10 +1,6 @@
 # This configuration is used for local development environment.
 # Profile: local (activate with -Dquarkus.profile=local)
 
-# External Service Hosts
-event-hubs-host: "127.0.0.1"
-schema-registry-host: "127.0.0.1"
-
 # Quarkus Configuration
 quarkus:
   devservices:
@@ -16,20 +12,16 @@ quarkus:
     category:
       "com.yape":
         level: DEBUG
-      "org.hibernate.SQL":
-        level: DEBUG
-      "org.hibernate.type.descriptor.sql":
-        level: TRACE
       "io.smallrye.reactive.messaging":
         level: DEBUG
 
 # Kafka / Event Streaming Configuration
 kafka:
   bootstrap:
-    servers: "${event-hubs-host}:9092"
+    servers: "${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}"
   schema:
     registry:
-      url: "http://${schema-registry-host}:8081"
+      url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
 
 # MicroProfile Reactive Messaging Configuration
 mp:
@@ -44,7 +36,7 @@ mp:
           serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
         schema:
           registry:
-            url: "http://${schema-registry-host}:8081"
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
 
     incoming:
       transaction-created-consumer:
@@ -62,7 +54,7 @@ mp:
           deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
         schema:
           registry:
-            url: "http://${schema-registry-host}:8081"
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
         specific:
           avro:
             reader: true

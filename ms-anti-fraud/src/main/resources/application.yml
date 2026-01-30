@@ -8,6 +8,7 @@ quarkus:
   http:
     root-path: /ms-anti-fraud
     port: 18081
+  profile: local
 
 info:
   project:
