@@ -35,18 +35,21 @@ kafka:
 mp:
   messaging:
     outgoing:
-      kafka-out:
+      transaction-status-producer:
         connector: smallrye-kafka
-        topic: test-event
+        topic: transaction.status
         key:
           serializer: org.apache.kafka.common.serialization.StringSerializer
         value:
           serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        schema:
+          registry:
+            url: "http://${schema-registry-host}:8081"
 
     incoming:
-      kafka-in:
+      transaction-created-consumer:
         connector: smallrye-kafka
-        topic: test-event
+        topic: transaction.created
         group:
           id: ms-anti-fraud-group
         auto:
@@ -57,6 +60,9 @@ mp:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
         value:
           deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema:
+          registry:
+            url: "http://${schema-registry-host}:8081"
         specific:
           avro:
             reader: true
