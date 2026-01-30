@@ -21,6 +21,8 @@
         <spotbugs-plugin.version>4.8.6.6</spotbugs-plugin.version>
         <lombok.version>1.18.42</lombok.version>
         <redisson.version>3.43.0</redisson.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <lombok.mapstruct.binding>0.2.0</lombok.mapstruct.binding>
     </properties>
 
     <groupId>com.yape.services</groupId>
@@ -100,6 +102,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
         <!-- Jackson Java 8 Date/Time -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -159,6 +168,11 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-junit5-mockito</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -225,7 +239,20 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok.mapstruct.binding}</version>
+                        </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Amapstruct.defaultComponentModel=jakarta-cdi</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -266,6 +293,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/transaction/graphql/**</exclude>
+                        <exclude>**/persistence/entity/**</exclude>
+                        <exclude>**/TransferTypeMapperImpl.*</exclude>
+                        <exclude>**/GraphqlTransactionMapperImpl.*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
