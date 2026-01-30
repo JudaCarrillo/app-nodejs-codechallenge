@@ -8,6 +8,16 @@ quarkus:
   http:
     root-path: /ms-transaction
     port: 18080
+  profile: local
+  smallrye-graphql:
+    error-extension-fields:
+      - exception
+      - classification
+      - code
+    show-runtime-exception-message:
+      - com.yape.services.shared.exception.BusinessException
+      - com.yape.services.shared.exception.ValidationException
+      - com.yape.services.shared.exception.ResourceNotFoundException
 
 info:
   project:
