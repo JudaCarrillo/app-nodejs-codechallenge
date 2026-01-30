@@ -130,24 +130,44 @@ src/main/java/com/yape/services/
 
 ## Getting Started
 
-### 1. Start Infrastructure
+### Prerequisites
+- Docker & Docker Compose
+
+### 1. Start All Services
 ```bash
 docker-compose up -d
 ```
 
-### 2. Run Microservices
-```bash
-# Terminal 1 - Transaction Service
-cd ms-transaction && ./mvnw quarkus:dev
+This command starts all services:
+- **PostgreSQL** (:5432) - Transaction database
+- **Redis** (:6379) - Caching layer
+- **Zookeeper** (:2181) - Kafka coordination
+- **Kafka** (:9092) - Event streaming
+- **Schema Registry** (:8081) - Avro schema management
+- **ms-transaction** (:18080) - Transaction microservice
+- **ms-anti-fraud** (:18081) - Anti-fraud microservice
 
-# Terminal 2 - Anti-Fraud Service  
-cd ms-anti-fraud && ./mvnw quarkus:dev
-```
-
-### 3. Verify Health
+### 2. Verify Health
 ```bash
+# Wait ~2 minutes for services to be ready, then:
 curl http://localhost:18080/ms-transaction/health
 curl http://localhost:18081/ms-anti-fraud/health
+```
+
+### 3. Stop Services
+```bash
+docker-compose down
+```
+
+### Development Mode (Optional)
+For local development with hot-reload:
+```bash
+# Start only infrastructure
+docker-compose up -d postgres redis zookeeper kafka schema-registry
+
+# Run microservices locally
+cd ms-transaction && ./mvnw quarkus:dev
+cd ms-anti-fraud && ./mvnw quarkus:dev
 ```
 
 ---
